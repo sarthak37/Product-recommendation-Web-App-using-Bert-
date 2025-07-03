@@ -4,7 +4,7 @@ from sklearn.metrics.pairwise import cosine_similarity
 from sentence_transformers import SentenceTransformer
 
 # Load a pre-trained Sentence-BERT model
-model = SentenceTransformer('all-MiniLM-L6-v2')
+model = SentenceTransformer('paraphrase-MiniLM-L3-v2')
 # Load the embeddings and product data
 df = pd.read_pickle('product_embeddings.pkl')
 df['imgs'] = df['imgs'].apply(lambda x: eval(x) if isinstance(x, str) else x)
@@ -29,4 +29,5 @@ def index():
     return render_template('index.html', recommendations=recommendations)
 
 if __name__ == '__main__':
-    app.run(debug=True, host="localhost", port=8080)
+    port = int(os.environ.get("PORT", 10000))  # 10000 is Render's default
+    app.run(debug=False, host="0.0.0.0", port=port)
